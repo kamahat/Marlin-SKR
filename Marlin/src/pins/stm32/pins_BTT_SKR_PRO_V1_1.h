@@ -85,7 +85,7 @@
 #ifndef E0_CS_PIN
   #define E0_CS_PIN        PB3
 #endif
-
+/*
 #define E1_STEP_PIN        PD15
 #define E1_DIR_PIN         PE7
 #define E1_ENABLE_PIN      PA3
@@ -98,6 +98,13 @@
 #define E2_ENABLE_PIN      PF0
 #ifndef E2_CS_PIN
   #define E2_CS_PIN        PG12
+#endif
+*/
+#define Z2_STEP_PIN        PD13
+#define Z2_DIR_PIN         PG9
+#define Z2_ENABLE_PIN      PF0
+#ifndef Z2_CS_PIN
+  #define Z2_CS_PIN        PG12
 #endif
 
 //
