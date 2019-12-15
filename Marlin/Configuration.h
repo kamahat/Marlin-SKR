@@ -721,14 +721,25 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 2560, 500 }
+/*
+  ** X&Y
+    moteur 400 pas / tour
+    20 dents de 2mm
+  ** Z: 200*16/2=1600
+  T8  2mm/tour 
+  moteur : 1.8°/tour (200pas/tour) * 1/16 µstep
+*/
+#define X_AXIS_STEPS_PER_UNIT  (400 * X_MICROSTEPS ) / (20 *2)
+#define Y_AXIS_STEPS_PER_UNIT  (400 * Y_MICROSTEPS ) / (20 *2)
+#define Z_AXIS_STEPS_PER_UNIT  (200 * Z_MICROSTEPS /2) / 4
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { X_AXIS_STEPS_PER_UNIT, Y_AXIS_STEPS_PER_UNIT, Z_AXIS_STEPS_PER_UNIT , 535 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 200, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 200, 200, 5, 75 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
