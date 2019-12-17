@@ -726,12 +726,13 @@
     moteur 400 pas / tour
     20 dents de 2mm
   ** Z: 200*16/2=1600
-  T8  2mm/tour 
+  T8  8mm/tour (2 mm, 4 filets)
   moteur : 1.8°/tour (200pas/tour) * 1/16 µstep
+  TR08x1.5
 */
 #define X_AXIS_STEPS_PER_UNIT  (400 * X_MICROSTEPS ) / (20 *2)
 #define Y_AXIS_STEPS_PER_UNIT  (400 * Y_MICROSTEPS ) / (20 *2)
-#define Z_AXIS_STEPS_PER_UNIT  (200 * Z_MICROSTEPS /2) / 4
+#define Z_AXIS_STEPS_PER_UNIT  (200 * Z_MICROSTEPS /8) 
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { X_AXIS_STEPS_PER_UNIT, Y_AXIS_STEPS_PER_UNIT, Z_AXIS_STEPS_PER_UNIT , 535 }
 
 /**
@@ -739,7 +740,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 200, 200, 5, 75 }
+#define DEFAULT_MAX_FEEDRATE          { 200, 200, 20, 75 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -812,7 +813,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-//#define S_CURVE_ACCELERATION
+#define S_CURVE_ACCELERATION
 
 //===========================================================================
 //============================= Z Probe Options =============================
