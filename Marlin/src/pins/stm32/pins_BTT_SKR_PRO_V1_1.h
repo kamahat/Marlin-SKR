@@ -37,8 +37,9 @@
 // Servos
 //
 #define SERVO0_PIN         PA1
-#define PS_ON_PIN          PC4  // Extension-1
-#define NEOPIXEL_PIN       PG11 // Extension-1
+#define PS_ON_PIN          PC4  // Extension-1 // Marlin M81
+#define NEOPIXEL_PIN       PG13 // Extension-1
+#define NEOPIXEL2_PIN      PG11 // Extension-1
 //
 // Limit Switches
 //
@@ -165,7 +166,8 @@
 //
 #define TEMP_0_PIN         PF4  // T1 <-> E0
 #define TEMP_1_PIN         PF5  // T2 <-> E1
-#define TEMP_2_PIN         PF6  // T3 <-> E2
+//#define TEMP_2_PIN         PF6  // T3 <-> E2
+#define TEMP_CHAMBER_PIN   PF6  // T3 <-> E2
 #define TEMP_BED_PIN       PF3  // T0 <-> Bed
 
 //
