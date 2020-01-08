@@ -34,9 +34,8 @@
 #define FLASH_EEPROM_EMULATION  // Use Flash-based EEPROM emulation
 
 //
-// Servos
+// Autres
 //
-#define SERVO0_PIN         PA1
 #define PS_ON_PIN          PC4  // Extension-1 // Marlin M81
 #define NEOPIXEL_PIN       PG13 // Extension-1
 #define NEOPIXEL2_PIN      PG11 // Extension-1
@@ -56,6 +55,7 @@
 #ifndef Z_MIN_PROBE_PIN
   #define Z_MIN_PROBE_PIN  PA2
 #endif
+#define SERVO0_PIN         PA1
 
 //
 // Steppers
