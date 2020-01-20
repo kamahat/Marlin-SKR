@@ -496,10 +496,10 @@
 //
 // For Z set the number of stepper drivers
 //
-#define NUM_Z_STEPPER_DRIVERS 1   // (1-4) Z options change based on how many
+#define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
 
 #if NUM_Z_STEPPER_DRIVERS > 1
-  //#define Z_MULTI_ENDSTOPS
+  #define Z_MULTI_ENDSTOPS
   #if ENABLED(Z_MULTI_ENDSTOPS)
     #define Z2_USE_ENDSTOP          _XMAX_
     #define Z2_ENDSTOP_ADJUSTMENT   0
@@ -2120,7 +2120,7 @@
   //#define Y2_SLAVE_ADDRESS 0
   #define Z2_SLAVE_ADDRESS 0
   //#define Z3_SLAVE_ADDRESS 0
-  #define Z4_SLAVE_ADDRESS 0
+  //#define Z4_SLAVE_ADDRESS 0
   #define E0_SLAVE_ADDRESS 0
   #define E1_SLAVE_ADDRESS 0
   //#define E2_SLAVE_ADDRESS 0
