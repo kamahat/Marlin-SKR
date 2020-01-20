@@ -657,7 +657,7 @@
 //#define Z_STEPPER_AUTO_ALIGN
 #if ENABLED(Z_STEPPER_AUTO_ALIGN)
   // Define probe X and Y positions for Z1, Z2 [, Z3]
-  #define Z_STEPPER_ALIGN_XY { {  10, 190 }, { 100,  10 }, { 190, 190 } }
+  #define Z_STEPPER_ALIGN_XY { {  10, 290 }, { 150,  10 } }
 
   // Provide Z stepper positions for more rapid convergence in bed alignment.
   // Currently requires triple stepper drivers.
@@ -2118,7 +2118,7 @@
   //#define X2_SLAVE_ADDRESS 0
   //#define Y2_SLAVE_ADDRESS 0
   #define Z2_SLAVE_ADDRESS 0
-  #define Z3_SLAVE_ADDRESS 0
+  //#define Z3_SLAVE_ADDRESS 0
   #define Z4_SLAVE_ADDRESS 0
   #define E0_SLAVE_ADDRESS 0
   #define E1_SLAVE_ADDRESS 0
@@ -2244,7 +2244,8 @@
     #define Z_STALL_SENSITIVITY  8
     #define Z2_STALL_SENSITIVITY  Z_STALL_SENSITIVITY
     //#define SPI_ENDSTOPS              // TMC2130 only
-    //#define IMPROVE_HOMING_RELIABILITY
+    //#define HOME_USING_SPREADCYCLE
+    #define IMPROVE_HOMING_RELIABILITY
   #endif
 
   /**
