@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -668,12 +668,38 @@
  */
 //#define Z_STEPPER_AUTO_ALIGN
 #if ENABLED(Z_STEPPER_AUTO_ALIGN)
-  // Define probe X and Y positions for Z1, Z2 [, Z3]
-  //#define Z_STEPPER_ALIGN_XY { {  10, 290 }, { 150,  10 }, { 290, 290 } }
+  // Define probe X and Y positions for Z1, Z2 [, Z3 [, Z4]]
+  // If not defined, probe limits will be used.
+  // Override with 'M422 S<index> X<pos> Y<pos>'
+  //#define Z_STEPPER_ALIGN_XY { {  10, 190 }, { 100,  10 }, { 190, 190 } }
   #define Z_STEPPER_ALIGN_XY { {  10, 290 }, { 150,  10 } }
 
+  /**
+   * Orientation for the automatically-calculated probe positions.
+   * Override Z stepper align points with 'M422 S<index> X<pos> Y<pos>'
+   *
+   * 2 Steppers:  (0)     (1)
+   *               |       |   2   |
+   *               | 1   2 |       |
+   *               |       |   1   |
+   *
+   * 3 Steppers:  (0)     (1)     (2)     (3)
+   *               |   3   | 1     | 2   1 |     2 |
+   *               |       |     3 |       | 3     |
+   *               | 1   2 | 2     |   3   |     1 |
+   *
+   * 4 Steppers:  (0)     (1)     (2)     (3)
+   *               | 4   3 | 1   4 | 2   1 | 3   2 |
+   *               |       |       |       |       |
+   *               | 1   2 | 2   3 | 3   4 | 4   1 |
+   *
+   */
+  #ifndef Z_STEPPER_ALIGN_XY
+    //#define Z_STEPPERS_ORIENTATION 0
+  #endif
+
   // Provide Z stepper positions for more rapid convergence in bed alignment.
-  // Currently requires triple stepper drivers.
+  // Requires triple stepper drivers (i.e., set NUM_Z_STEPPER_DRIVERS to 3)
   //#define Z_STEPPER_ALIGN_KNOWN_STEPPER_POSITIONS
   #if ENABLED(Z_STEPPER_ALIGN_KNOWN_STEPPER_POSITIONS)
     // Define Stepper XY positions for Z1, Z2, Z3 corresponding to
@@ -681,23 +707,16 @@
     // Define one position per Z stepper in stepper driver order.
     #define Z_STEPPER_ALIGN_STEPPER_XY { { 210.7, 102.5 }, { 152.6, 220.0 }, { 94.5, 102.5 } }
   #else
-    // Amplification factor. Used to scale the correction step up or down.
-    // In case the stepper (spindle) position is further out than the test point.
-    // Use a value > 1. NOTE: This may cause instability
-    #define Z_STEPPER_ALIGN_AMP 1.0
+    // Amplification factor. Used to scale the correction step up or down in case
+    // the stepper (spindle) position is farther out than the test point.
+    #define Z_STEPPER_ALIGN_AMP 1.0       // Use a value > 1.0 NOTE: This may cause instability!
   #endif
 
-  // Set number of iterations to align
-  #define Z_STEPPER_ALIGN_ITERATIONS 3
-
-  // Enable to restore leveling setup after operation
-  #define RESTORE_LEVELING_AFTER_G34
-
   // On a 300mm bed a 5% grade would give a misalignment of ~1.5cm
-  #define G34_MAX_GRADE  5  // (%) Maximum incline G34 will handle
-
-  // Stop criterion. If the accuracy is better than this stop iterating early
-  #define Z_STEPPER_ALIGN_ACC 0.02
+  #define G34_MAX_GRADE              5    // (%) Maximum incline that G34 will handle
+  #define Z_STEPPER_ALIGN_ITERATIONS 5    // Number of iterations to apply during alignment
+  #define Z_STEPPER_ALIGN_ACC        0.02 // Stop iterating early if the accuracy is better than this
+  #define RESTORE_LEVELING_AFTER_G34      // Restore leveling after G34 is done?
 #endif
 
 // @section motion
@@ -822,8 +841,8 @@
 
   // Define the pin to read during calibration
   #ifndef CALIBRATION_PIN
-    #define CALIBRATION_PIN -1 // Override in pins.h or set to -1 to use your Z endstop
-    #define CALIBRATION_PIN_INVERTING false // Set to true to invert the pin
+    //#define CALIBRATION_PIN -1            // Define here to override the default pin
+    #define CALIBRATION_PIN_INVERTING false // Set to true to invert the custom pin
     //#define CALIBRATION_PIN_PULLDOWN
     #define CALIBRATION_PIN_PULLUP
   #endif
@@ -1555,7 +1574,7 @@
 
   // Add additional compensation depending on hotend temperature
   // Note: this values cannot be calibrated and have to be set manually
-  #ifdef PROBE_TEMP_COMPENSATION
+  #if ENABLED(PROBE_TEMP_COMPENSATION)
     // Max temperature that can be reached by heated bed.
     // This is required only for the calibration process.
     #define PTC_MAX_BED_TEMP 110
@@ -2256,6 +2275,166 @@
   #define E5_HYBRID_THRESHOLD     30
   #define E6_HYBRID_THRESHOLD     30
   #define E7_HYBRID_THRESHOLD     30
+
+  /**
+   * CoolStep. Currently supported for TMC2130, TMC2209, TMC5130 and TMC5160 only.
+   * This mode allows for cooler steppers and energy savings.
+   * The driver will switch to coolStep when stepper speed is over COOLSTEP_THRESHOLD mm/s.
+   *
+   * If SG_RESULT goes below COOLSTEP_LOWER_LOAD_THRESHOLD * 32 stepper current will be increased.
+   * Set to 0 to disable CoolStep.
+   *
+   * If SG_RESULT goes above (COOLSTEP_LOWER_LOAD_THRESHOLD + COOLSTEP_UPPER_LOAD_THRESHOLD + 1) * 32
+   * stepper current will be decreased.
+   *
+   * SEUP sets the increase step width. Value range is 0..3 and computed as 2^SEUP.
+   * SEDN sets the decrease delay. Value range is 0..3, 0 being the slowest.
+   * SEIMIN sets the lower current limit. 0: 1/2 of IRUN, 1:1/4 of IRUN
+   */
+
+  #if AXIS_HAS_COOLSTEP(X)
+    #define X_COOLSTEP_SPEED_THRESHOLD        5
+    #define X_COOLSTEP_LOWER_LOAD_THRESHOLD   7
+    #define X_COOLSTEP_UPPER_LOAD_THRESHOLD   0
+    #define X_COOLSTEP_SEUP                   2
+    #define X_COOLSTEP_SEDN                   0
+    #define X_COOLSTEP_SEIMIN                 1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(X2)
+    #define X2_COOLSTEP_SPEED_THRESHOLD       5
+    #define X2_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define X2_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define X2_COOLSTEP_SEUP                  2
+    #define X2_COOLSTEP_SEDN                  0
+    #define X2_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(Y)
+    #define Y_COOLSTEP_SPEED_THRESHOLD        5
+    #define Y_COOLSTEP_LOWER_LOAD_THRESHOLD   7
+    #define Y_COOLSTEP_UPPER_LOAD_THRESHOLD   0
+    #define Y_COOLSTEP_SEUP                   2
+    #define Y_COOLSTEP_SEDN                   0
+    #define Y_COOLSTEP_SEIMIN                 1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(Y2)
+    #define Y2_COOLSTEP_SPEED_THRESHOLD       5
+    #define Y2_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define Y2_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define Y2_COOLSTEP_SEUP                  2
+    #define Y2_COOLSTEP_SEDN                  0
+    #define Y2_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(Z)
+    #define Z_COOLSTEP_SPEED_THRESHOLD        5
+    #define Z_COOLSTEP_LOWER_LOAD_THRESHOLD   7
+    #define Z_COOLSTEP_UPPER_LOAD_THRESHOLD   0
+    #define Z_COOLSTEP_SEUP                   2
+    #define Z_COOLSTEP_SEDN                   0
+    #define Z_COOLSTEP_SEIMIN                 1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(Z2)
+    #define Z2_COOLSTEP_SPEED_THRESHOLD       5
+    #define Z2_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define Z2_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define Z2_COOLSTEP_SEUP                  2
+    #define Z2_COOLSTEP_SEDN                  0
+    #define Z2_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(Z3)
+    #define Z3_COOLSTEP_SPEED_THRESHOLD       5
+    #define Z3_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define Z3_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define Z3_COOLSTEP_SEUP                  2
+    #define Z3_COOLSTEP_SEDN                  0
+    #define Z3_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(Z4)
+    #define Z4_COOLSTEP_SPEED_THRESHOLD       5
+    #define Z4_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define Z4_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define Z4_COOLSTEP_SEUP                  2
+    #define Z4_COOLSTEP_SEDN                  0
+    #define Z4_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E0)
+    #define E0_COOLSTEP_SPEED_THRESHOLD       5
+    #define E0_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E0_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E0_COOLSTEP_SEUP                  2
+    #define E0_COOLSTEP_SEDN                  0
+    #define E0_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E1)
+    #define E1_COOLSTEP_SPEED_THRESHOLD       5
+    #define E1_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E1_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E1_COOLSTEP_SEUP                  2
+    #define E1_COOLSTEP_SEDN                  0
+    #define E1_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E2)
+    #define E2_COOLSTEP_SPEED_THRESHOLD       5
+    #define E2_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E2_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E2_COOLSTEP_SEUP                  2
+    #define E2_COOLSTEP_SEDN                  0
+    #define E2_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E3)
+    #define E3_COOLSTEP_SPEED_THRESHOLD       5
+    #define E3_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E3_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E3_COOLSTEP_SEUP                  2
+    #define E3_COOLSTEP_SEDN                  0
+    #define E3_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E4)
+    #define E4_COOLSTEP_SPEED_THRESHOLD       5
+    #define E4_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E4_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E4_COOLSTEP_SEUP                  2
+    #define E4_COOLSTEP_SEDN                  0
+    #define E4_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E5)
+    #define E5_COOLSTEP_SPEED_THRESHOLD       5
+    #define E5_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E5_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E5_COOLSTEP_SEUP                  2
+    #define E5_COOLSTEP_SEDN                  0
+    #define E5_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E6)
+    #define E6_COOLSTEP_SPEED_THRESHOLD       5
+    #define E6_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E6_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E6_COOLSTEP_SEUP                  2
+    #define E6_COOLSTEP_SEDN                  0
+    #define E6_COOLSTEP_SEIMIN                1
+  #endif
+
+  #if AXIS_HAS_COOLSTEP(E7)
+    #define E7_COOLSTEP_SPEED_THRESHOLD       5
+    #define E7_COOLSTEP_LOWER_LOAD_THRESHOLD  7
+    #define E7_COOLSTEP_UPPER_LOAD_THRESHOLD  0
+    #define E7_COOLSTEP_SEUP                  2
+    #define E7_COOLSTEP_SEDN                  0
+    #define E7_COOLSTEP_SEIMIN                1
+  #endif
 
   /**
    * Use StallGuard2 to home / probe X, Y, Z.
@@ -3006,11 +3185,19 @@
 //#define ESP3D_WIFISUPPORT   // ESP3D Library WiFi management (https://github.com/luc-github/ESP3DLib)
 
 #if EITHER(WIFISUPPORT, ESP3D_WIFISUPPORT)
-  #define WIFI_SSID "Wifi SSID"
-  #define WIFI_PWD  "Wifi Password"
   //#define WEBSUPPORT          // Start a webserver (which may include auto-discovery)
   //#define OTASUPPORT          // Support over-the-air firmware updates
   //#define WIFI_CUSTOM_COMMAND // Accept feature config commands (e.g., WiFi ESP3D) from the host
+
+  /**
+   * To set a default WiFi SSID / Password, create a file called Configuration_Secure.h with
+   * the following defines, customized for your network. This specific file is excluded via
+   * .gitignore to prevent it from accidentally leaking to the public.
+   *
+   *   #define WIFI_SSID "WiFi SSID"
+   *   #define WIFI_PWD  "WiFi Password"
+   */
+  //#include "Configuration_Secure.h" // External file with WiFi SSID / Password
 #endif
 
 /**
