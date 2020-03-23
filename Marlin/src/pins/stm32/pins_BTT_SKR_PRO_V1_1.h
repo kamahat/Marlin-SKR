@@ -36,11 +36,17 @@
 //
 // Autres
 //
-#define PS_ON_PIN          PC4  // Extension-1 // Marlin M81
-#define NEOPIXEL_PIN       PG13 // Extension-1
+//#define PS_ON_PIN          PC4  // Extension-1 // Marlin M81
+//#define NEOPIXEL_PIN       PG13 // Extension-1
 //#define NEOPIXEL_BKGD_LED_INDEX  PG14 // Extension-1
 //#define NEOPIXEL2_PIN      PG11 // Extension-1
 //
+// =================
+// Raspi
+// pin 10 (GPIO15) => Din led
+// pin 9 : GND toutes relies
+// pin 4 : +5V
+
 // Limit Switches
 //
 #define X_MIN_PIN          PB10
