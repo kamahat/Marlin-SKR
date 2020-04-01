@@ -31,7 +31,7 @@
 
 // Use one of these or SDCard-based Emulation will be used
 //#define SRAM_EEPROM_EMULATION                   // Use BackSRAM-based EEPROM emulation
-//#define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation
+#define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation
 
 //
 // Servos
@@ -39,6 +39,18 @@
 #define SERVO0_PIN                          PA1
 
 //
+// Autres
+//
+//#define PS_ON_PIN          PC4  // Extension-1 // Marlin M81
+//#define NEOPIXEL_PIN       PG13 // Extension-1
+//#define NEOPIXEL_BKGD_LED_INDEX  PG14 // Extension-1
+//#define NEOPIXEL2_PIN      PG11 // Extension-1
+//
+// =================
+// Raspi
+// pin 10 (GPIO15) => Din led
+// pin 9 : GND toutes relies
+// pin 4 : +5V
 // Limit Switches
 //
 #define X_MIN_PIN                           PB10
@@ -79,25 +91,25 @@
   #define Z_CS_PIN                          PB9
 #endif
 
-#define E0_STEP_PIN                         PE14
-#define E0_DIR_PIN                          PA0
-#define E0_ENABLE_PIN                       PC3
+#define Z2_STEP_PIN        PE14
+#define Z2_DIR_PIN         PA0
+#define Z2_ENABLE_PIN      PC3
+#ifndef Z2_CS_PIN
+  #define Z2_CS_PIN        PB3
+#endif
+
+#define E0_STEP_PIN        PD15
+#define E0_DIR_PIN         PE7
+#define E0_ENABLE_PIN      PA3
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN                         PB3
+  #define E0_CS_PIN        PG15
 #endif
 
-#define E1_STEP_PIN                         PD15
-#define E1_DIR_PIN                          PE7
-#define E1_ENABLE_PIN                       PA3
+#define E1_STEP_PIN        PD13
+#define E1_DIR_PIN         PG9
+#define E1_ENABLE_PIN      PF0
 #ifndef E1_CS_PIN
-  #define E1_CS_PIN                         PG15
-#endif
-
-#define E2_STEP_PIN                         PD13
-#define E2_DIR_PIN                          PG9
-#define E2_ENABLE_PIN                       PF0
-#ifndef E2_CS_PIN
-  #define E2_CS_PIN                         PG12
+  #define E1_CS_PIN        PG12
 #endif
 
 //
@@ -165,6 +177,7 @@
 #define TEMP_0_PIN                          PF4   // T1 <-> E0
 #define TEMP_1_PIN                          PF5   // T2 <-> E1
 #define TEMP_2_PIN                          PF6   // T3 <-> E2
+#define TEMP_CHAMBER_PIN   					PF6   // T3 <->E2
 #define TEMP_BED_PIN                        PF3   // T0 <-> Bed
 
 //
