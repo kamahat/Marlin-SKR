@@ -844,9 +844,6 @@
  */
 //#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
-// Force the use of the probe for Z-axis homing
-//#define USE_PROBE_FOR_Z_HOMING
-
 /**
  * Z_MIN_PROBE_PIN
  *
@@ -1113,12 +1110,12 @@
 #define Y_BED_SIZE 320
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
+#define X_MIN_POS -13
+#define Y_MIN_POS -37
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
+#define X_MAX_POS X_BED_SIZE + 10
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 300
+#define Z_MAX_POS 310
 
 /**
  * Software Endstops
