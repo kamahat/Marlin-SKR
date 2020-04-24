@@ -41,7 +41,8 @@
 //
 // Autres
 //
-//#define PS_ON_PIN          PC4  // Extension-1 // Marlin M81
+#define PS_ON_PIN           PC4  // Extension-1 // Marlin M81
+#define CONTROLLER_FAN_PIN  PC5  // Extension-1 
 //#define NEOPIXEL_PIN       PG13 // Extension-1
 //#define NEOPIXEL_BKGD_LED_INDEX  PG14 // Extension-1
 //#define NEOPIXEL2_PIN      PG11 // Extension-1
