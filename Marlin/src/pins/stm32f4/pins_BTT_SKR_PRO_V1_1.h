@@ -97,16 +97,16 @@
   #else
     #define Z_MIN_PIN                       PG5   // E2
   #endif
-#else
+#else 
   #define Z_MIN_PIN                         PG8   // Z-
-  #define Z_MAX_PIN                         PG5   // E2
+  //#define Z_MAX_PIN                         PG5   // E2
 #endif
 
 //
 // Z Probe must be this pin
 //
 #ifndef Z_MIN_PROBE_PIN
-  #define Z_MIN_PROBE_PIN                   PA2
+  #define Z_MIN_PROBE_PIN                   PG5 // PA2
 #endif
 
 //
