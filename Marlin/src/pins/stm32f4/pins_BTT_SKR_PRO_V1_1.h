@@ -224,7 +224,7 @@
 
 //
 // Heaters / Fans
-//
+// M106 S37 = 5V ; S128 = 12V S255=24V
 #define HEATER_0_PIN                        PB1   // Heater0
 #define HEATER_1_PIN                        PD14  // Heater1
 #define HEATER_2_PIN                        PB0   // Heater1
@@ -234,7 +234,8 @@
 #define FAN2_PIN                            PE6
 
 #ifndef E0_AUTO_FAN_PIN
-  #define E0_AUTO_FAN_PIN               FAN1_PIN
+  #define E0_AUTO_FAN_PIN PE6               FAN2_PIN
+  #define E1_AUTO_FAN_PIN PE6               FAN2_PIN
 #endif
 
 //
