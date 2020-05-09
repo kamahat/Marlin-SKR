@@ -758,9 +758,9 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 120, 120, 80, 75 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 100, 75 }
 
-#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
+//#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
   #define MAX_FEEDRATE_EDIT_VALUES    { 300, 300, 120, 300 } // ...or, set your own edit limits
 #endif
@@ -771,7 +771,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 2500, 2500, 100, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 1500 , 1500, 100, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -786,9 +786,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1500    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          800    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  10000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   1200    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -822,7 +822,7 @@
  *   http://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.0216 //0.013 // (mm) Distance from real junction edge
+  #define JUNCTION_DEVIATION_MM 0.4 * 10 * 10 / DEFAULT_ACCELERATION// 0.0216 //0.013 // (mm) Distance from real junction edge
 #endif
 
 /**
@@ -977,7 +977,7 @@
  *
  * Specify a Probe position as { X, Y, Z }
  */
-#define NOZZLE_TO_PROBE_OFFSET { -13, 80, -0.2 }
+#define NOZZLE_TO_PROBE_OFFSET { -13, 92, -0.2 }
 #define ProbeDiameter 12
 
 // Most probes should stay away from the edges of the bed, but
@@ -1114,15 +1114,15 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 300
-#define Y_BED_SIZE 300
+#define X_BED_SIZE 298
+#define Y_BED_SIZE 298
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS -13
-#define Y_MIN_POS -27
+#define X_MIN_POS -15
+#define Y_MIN_POS -37
 #define Z_MIN_POS -2
-#define X_MAX_POS 328 + X_MIN_POS
-#define Y_MAX_POS 340 + Y_MIN_POS
+#define X_MAX_POS 325 + X_MIN_POS
+#define Y_MAX_POS 335 + Y_MIN_POS
 #define Z_MAX_POS 307 + Z_MIN_POS
 
 /**
