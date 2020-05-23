@@ -423,7 +423,7 @@
 #define TEMP_SENSOR_7 0
 #define TEMP_SENSOR_BED 11      // NTC3950 silicon pad
 #define TEMP_SENSOR_PROBE 0
-#define TEMP_SENSOR_CHAMBER 11
+#define TEMP_SENSOR_CHAMBER 13  // 11 pas la bonne mesure manque 20°C
 
 // Dummy thermistor constant temperature readings, for use with 998 and 999
 #define DUMMY_THERMISTOR_998_VALUE 25
@@ -1119,15 +1119,15 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 298
-#define Y_BED_SIZE 298
+#define X_BED_SIZE 200  // miroir 298
+#define Y_BED_SIZE 200  // miroir 298
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS -15
 #define Y_MIN_POS -37
 #define Z_MIN_POS -2
 #define X_MAX_POS 325 + X_MIN_POS
-#define Y_MAX_POS 335 + Y_MIN_POS
+#define Y_MAX_POS 225
 #define Z_MAX_POS 307 + Z_MIN_POS
 
 /**
@@ -1278,7 +1278,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 9
+  #define GRID_MAX_POINTS_X 7
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
@@ -1501,11 +1501,11 @@
 // Preheat Constants
 #define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 200
-#define PREHEAT_1_TEMP_BED     70
+#define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "ABS"
-#define PREHEAT_2_TEMP_HOTEND 250
+#define PREHEAT_2_TEMP_HOTEND 260
 #define PREHEAT_2_TEMP_BED    90
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
