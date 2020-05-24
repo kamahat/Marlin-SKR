@@ -61,15 +61,15 @@
 //
 #define PS_ON_PIN           PC4  // Extension-1 // Marlin M81
 #define CONTROLLER_FAN_PIN  PC5  // Extension-1 
-//#define NEOPIXEL_PIN       PG13 // Extension-1
+#define NEOPIXEL_PIN       PG13 // Extension-1
 //#define NEOPIXEL_BKGD_LED_INDEX  PG14 // Extension-1
 //#define NEOPIXEL2_PIN      PG11 // Extension-1
 //
 // =================
 // Raspi
-// pin 10 (GPIO15) => Din led
-// pin 9 : GND toutes relies
-// pin 4 : +5V
+// pin 19 (GPIO10) => Din led
+// pin 20 : GND toutes relies
+//
 // Limit Switches
 //
 #ifdef X_STALL_SENSITIVITY
@@ -224,7 +224,7 @@
 //
 #define TEMP_0_PIN                          PF4   // T1 <-> E0
 #define TEMP_1_PIN                          PF5   // T2 <-> E1
-#define TEMP_2_PIN                          PF6   // T3 <-> E2
+//#define TEMP_2_PIN                          PF6   // T3 <-> E2
 #define TEMP_CHAMBER_PIN   					PF6   // T3 <->E2
 #define TEMP_BED_PIN                        PF3   // T0 <-> Bed
 
@@ -241,7 +241,7 @@
 
 #ifndef E0_AUTO_FAN_PIN
   #define E0_AUTO_FAN_PIN                   PE6   // FAN2_PIN
-  //#define E1_AUTO_FAN_PIN                   PE6   // FAN2_PIN
+  #define E1_AUTO_FAN_PIN                   PE6   // FAN2_PIN
 #endif
 
 //

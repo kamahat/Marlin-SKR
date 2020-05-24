@@ -142,7 +142,7 @@
 
 // This defines the number of extruders
 // :[1, 2, 3, 4, 5, 6, 7, 8]
-#define EXTRUDERS 1
+#define EXTRUDERS 2
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
@@ -416,7 +416,7 @@
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
 #define TEMP_SENSOR_0 13       
-#define TEMP_SENSOR_1 0
+#define TEMP_SENSOR_1 1047
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
 #define TEMP_SENSOR_4 0
@@ -459,8 +459,8 @@
 // Above this temperature the heater will be switched off.
 // This can protect components from overheating, but NOT from shorts and failures.
 // (Use MINTEMP for thermistor short/failure protection.)
-#define HEATER_0_MAXTEMP 350
-#define HEATER_1_MAXTEMP 350
+#define HEATER_0_MAXTEMP 280
+#define HEATER_1_MAXTEMP 280
 #define HEATER_2_MAXTEMP 275
 #define HEATER_3_MAXTEMP 275
 #define HEATER_4_MAXTEMP 275
@@ -583,7 +583,7 @@
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
 #define PREVENT_LENGTHY_EXTRUDE
-#define EXTRUDE_MAXLENGTH 200
+#define EXTRUDE_MAXLENGTH 300
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
@@ -741,7 +741,7 @@
  * following movement settings. If fewer factors are given than the
  * total number of extruders, the last value applies to the rest.
  */
-//#define DISTINCT_E_FACTORS
+#define DISTINCT_E_FACTORS
 
 /**
  * Default Axis Steps Per Unit (steps/mm)
@@ -762,14 +762,15 @@
 #define Y_AXIS_STEPS_PER_UNIT  (400 * Y_MICROSTEPS ) / (20 *2)
 #define Z_AXIS_STEPS_PER_UNIT  (200 * Z_MICROSTEPS /8) 
 #define E0_AXIS_STEPS_PER_UNIT 535
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { X_AXIS_STEPS_PER_UNIT, Y_AXIS_STEPS_PER_UNIT, Z_AXIS_STEPS_PER_UNIT , E0_AXIS_STEPS_PER_UNIT }
+#define E1_AXIS_STEPS_PER_UNIT 535
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { X_AXIS_STEPS_PER_UNIT, Y_AXIS_STEPS_PER_UNIT, Z_AXIS_STEPS_PER_UNIT , E0_AXIS_STEPS_PER_UNIT , E1_AXIS_STEPS_PER_UNIT }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 40, 170 }
+#define DEFAULT_MAX_FEEDRATE          { 300, 300, 40, 170 ,170 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -782,7 +783,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 1500 , 1500, 100, 5000 }
+#define DEFAULT_MAX_ACCELERATION      { 1500 , 1500, 100, 5000, 5000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -2226,7 +2227,7 @@
  *
  */
 //#define RGB_LED
-//w#define RGBW_LED
+//#define RGBW_LED
 
 #if EITHER(RGB_LED, RGBW_LED)
   //#define RGB_LED_R_PIN 34
@@ -2236,7 +2237,7 @@
 #endif
 
 // Support for Adafruit Neopixel LED driver
-//#define NEOPIXEL_LED
+#define NEOPIXEL_LED
 #if ENABLED(NEOPIXEL_LED)
   #define NEOPIXEL_TYPE   (NEO_GRBW + NEO_KHZ800) // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
   //#define NEOPIXEL_PIN     4       // LED driving pin
