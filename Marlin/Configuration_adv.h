@@ -2314,7 +2314,7 @@
   //#define Z3_SLAVE_ADDRESS 0
   //#define Z4_SLAVE_ADDRESS 0
   #define E0_SLAVE_ADDRESS 0
-  //#define E1_SLAVE_ADDRESS 0
+  #define E1_SLAVE_ADDRESS 0
   //#define E2_SLAVE_ADDRESS 0
   //#define E3_SLAVE_ADDRESS 0
   //#define E4_SLAVE_ADDRESS 0
@@ -2337,7 +2337,7 @@
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  #define STEALTHCHOP_E
+  //#define STEALTHCHOP_E
 
   /**
    * Optimize spreadCycle chopper parameters by using predefined parameter sets
