@@ -54,7 +54,7 @@
 #define Z_DIAG_PIN                          PG8   // Z-
 #define E0_DIAG_PIN                         PE15  // E0
 #define E1_DIAG_PIN                         PE10  // E1
-#define E2_DIAG_PIN                         PG5   // E2
+//#define E2_DIAG_PIN                         PG5   // E2
 
 //
 // Autres
