@@ -50,7 +50,7 @@
 // Trinamic Stallguard pins
 //
 #define X_DIAG_PIN                          PF2  // X-
-#define Y_DIAG_PIN                          PC13  // Y-
+//#define Y_DIAG_PIN                          PC13  // Y-
 //#define Z_DIAG_PIN                          PE0   // Z-
 //#define E0_DIAG_PIN                         PG14  // E0
 //#define E1_DIAG_PIN                         PG9  // E1
@@ -133,25 +133,25 @@
   #define Z_CS_PIN                          PB5
 #endif
 
-#define E0_STEP_PIN                         PG12
-#define E0_DIR_PIN                          PG11
-#define E0_ENABLE_PIN                       PG13
+#define Z2_STEP_PIN                          PG12
+#define Z2_DIR_PIN                           PG11  
+#define Z2_ENABLE_PIN                        PG13
+#ifndef Z2_CS_PIN
+  #define Z2_CS_PIN                          PG10
+#endif
+
+#define E0_STEP_PIN                         PD6
+#define E0_DIR_PIN                          PD5
+#define E0_ENABLE_PIN                       PD7
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN                         PG10
+  #define E0_CS_PIN                         PD4
 #endif
 
-#define E1_STEP_PIN                         PD6
-#define E1_DIR_PIN                          PD5
-#define E1_ENABLE_PIN                       PD7
+#define E1_STEP_PIN                         PD1
+#define E1_DIR_PIN                          PD0
+#define E1_ENABLE_PIN                       PD2
 #ifndef E1_CS_PIN
-  #define E1_CS_PIN                         PD4
-#endif
-
-#define E2_STEP_PIN                         PD1
-#define E2_DIR_PIN                          PD0
-#define E2_ENABLE_PIN                       PD2
-#ifndef E2_CS_PIN
-  #define E2_CS_PIN                         PC12
+  #define E1_CS_PIN                         PC12
 #endif
 
 #define E3_STEP_PIN                         PF3
@@ -271,7 +271,8 @@
 //
 #define TEMP_0_PIN                          PC1   // T1 <-> E0
 #define TEMP_1_PIN                          PC2   // T2 <-> E1
-#define TEMP_2_PIN                          PC3   // T3 <-> E2
+//#define TEMP_2_PIN                          PC3   // T3 <-> E2
+#define TEMP_CHAMBER_PIN                    PC3   // T3 <-> E2
 
 #define TEMP_3_PIN                          PA3   // T4 <-> E3
 #define TEMP_4_PIN                          PF9   // T5 <-> E4
@@ -354,6 +355,8 @@
 //
 // LCDs and Controllers
 //
+#define NEOPIXEL_PIN                PF13
+
 #if HAS_SPI_LCD
   #define BEEPER_PIN                        PC11
   #define BTN_ENC                           PA15
